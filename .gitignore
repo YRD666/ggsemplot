@@ -1,0 +1,23 @@
+# R workspace and history
+.RData
+.Rhistory
+.Rproj.user/
+
+# Generated output files
+*.pdf
+*.png
+
+# External package tarballs
+*.tar.gz
+
+# Standalone scripts (not part of package)
+sem_analysis.R
+新建 文本文档.R
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# IDE
+.vscode/
+*.Rproj

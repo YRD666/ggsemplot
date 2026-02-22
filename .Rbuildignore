@@ -1,0 +1,9 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^README\.md$
+^sem_analysis\.R$
+^sem_cfa_plot\.pdf$
+^sem_full_model_plot\.pdf$
+^sem_mediation_plot\.png$
+^.*\.tar\.gz$

@@ -1,0 +1,111 @@
+---
+title: "Advanced Customization"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Advanced Customization}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 9,
+  fig.height = 6,
+  dpi = 150
+)
+```
+
+## Fine-grained Control
+
+ggsemplot provides multiple levels of customization:
+
+1. **Theme selection** — choose a preset
+2. **Color palettes** — swap node/edge colors
+3. **Path highlighting** — emphasize specific paths
+4. **Node styling** — change individual node appearance
+5. **Layout tweaking** — nudge, swap, or manually place nodes
+6. **ggplot2 extension** — add any ggplot2 layer
+
+## Custom Theme
+
+Create your own theme by modifying the base:
+
+```{r custom-theme, eval = FALSE}
+library(ggsemplot)
+
+my_theme <- theme_sem_classic()
+my_theme$node_latent_fill  <- "#E8EAF6"
+my_theme$node_latent_color <- "#283593"
+my_theme$node_observed_fill <- "#FFF8E1"
+my_theme$node_observed_color <- "#F57F17"
+my_theme$edge_color <- "#455A64"
+my_theme$node_corner_radius <- 0.06
+my_theme$font_family <- "mono"
+
+plot_sem(fit, theme = my_theme, title = "Custom Theme")
+```
+
+## Relabeling Nodes
+
+```{r relabel, eval = FALSE}
+m <- extract_sem(fit)
+
+# Change display labels (not variable names)
+m$nodes$label[m$nodes$name == "ind60"] <- "Industrialization"
+m$nodes$label[m$nodes$name == "dem60"] <- "Democracy 1960"
+m$nodes$label[m$nodes$name == "dem65"] <- "Democracy 1965"
+
+plot_sem(m, theme = "modern")
+```
+
+## Manual Layout
+
+For full control over node positions:
+
+```{r manual, eval = FALSE}
+m <- extract_sem(fit)
+m <- layout_manual(m, list(
+  ind60 = c(0, 0),
+  dem60 = c(3, 0),
+  dem65 = c(6, 0),
+  x1 = c(-0.5, -2), x2 = c(0, -2), x3 = c(0.5, -2),
+  y1 = c(2, -2), y2 = c(2.5, -2), y3 = c(3, -2), y4 = c(3.5, -2),
+  y5 = c(5, -2), y6 = c(5.5, -2), y7 = c(6, -2), y8 = c(6.5, -2)
+))
+
+plot_sem(m, theme = "nature")
+```
+
+## Combining with ggplot2
+
+Since `plot_sem()` returns a ggplot2 object, add any ggplot2 layer:
+
+```{r ggplot2, eval = FALSE}
+library(ggplot2)
+
+plot_sem(fit, theme = "modern") +
+  labs(
+    title = "My SEM Model",
+    subtitle = "Political Democracy Dataset",
+    caption = "Note: Standardized coefficients shown"
+  ) +
+  theme(plot.subtitle = element_text(hjust = 0.5, color = "grey50"))
+```
+
+## Saving High-Resolution Figures
+
+```{r save, eval = FALSE}
+p <- plot_sem(fit, theme = "nature", layout = "tree2",
+              fit_indices = c("cfi", "rmsea", "srmr"))
+
+# PDF for journals
+ggsave("sem_figure.pdf", p, width = 12, height = 8)
+
+# High-DPI PNG for web/slides
+ggsave("sem_figure.png", p, width = 12, height = 8, dpi = 300)
+
+# SVG for further editing
+ggsave("sem_figure.svg", p, width = 12, height = 8)
+```

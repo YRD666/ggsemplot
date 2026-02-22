@@ -1,0 +1,36 @@
+Package: ggsemplot
+Title: Publication-Quality SEM Path Diagrams with 'ggplot2'
+Version: 0.1.0
+Authors@R: 
+    person("ggsemplot", "authors", email = "ggsemplot@example.com", role = c("aut", "cre"))
+Description: Create beautiful, publication-ready structural equation model (SEM)
+    path diagrams using 'ggplot2'. Provides a rich theme system with multiple
+    preset styles (classic, modern, APA, minimal, Nature, dark, colorful),
+    intelligent automatic layouts, and a declarative API. Extracts model
+    information from 'lavaan' and related packages, then renders nodes, edges,
+    and labels as native 'ggplot2' layers for full customizability.
+License: MIT + file LICENSE
+URL: https://github.com/ggsemplot/ggsemplot
+BugReports: https://github.com/ggsemplot/ggsemplot/issues
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports:
+    ggplot2 (>= 3.5.0),
+    ggforce (>= 0.4.0),
+    lavaan,
+    dplyr,
+    rlang,
+    cli,
+    grid,
+    stats
+Suggests:
+    blavaan,
+    OpenMx,
+    piecewiseSEM,
+    semTools,
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Config/testthat/edition: 3

@@ -1,0 +1,106 @@
+---
+title: "Theme Gallery"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Theme Gallery}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 9,
+  fig.height = 6,
+  dpi = 150
+)
+```
+
+## Theme Gallery
+
+This vignette showcases all 7 built-in themes using the Political Democracy
+SEM model from lavaan.
+
+```{r model, eval = FALSE}
+library(lavaan)
+library(ggsemplot)
+
+sem_model <- '
+  ind60 =~ x1 + x2 + x3
+  dem60 =~ y1 + y2 + y3 + y4
+  dem65 =~ y5 + y6 + y7 + y8
+  dem60 ~ ind60
+  dem65 ~ ind60 + dem60
+'
+
+fit <- sem(sem_model, data = PoliticalDemocracy)
+```
+
+### Classic (default)
+Clean black-and-white academic style. Suitable for most journal submissions.
+
+```{r classic, eval = FALSE}
+plot_sem(fit, layout = "tree2", theme = "classic",
+         title = "Classic Theme")
+```
+
+### Modern
+Soft color palette with rounded corners. Contemporary look for presentations.
+
+```{r modern, eval = FALSE}
+plot_sem(fit, layout = "tree2", theme = "modern",
+         title = "Modern Theme")
+```
+
+### APA
+Strict APA format. Black lines, no fills, serif font. Ideal for psychology journals.
+
+```{r apa, eval = FALSE}
+plot_sem(fit, layout = "tree2", theme = "apa",
+         title = "APA Theme")
+```
+
+### Minimal
+Ultra-clean design with thin lines and generous whitespace.
+
+```{r minimal, eval = FALSE}
+plot_sem(fit, layout = "tree2", theme = "minimal",
+         title = "Minimal Theme")
+```
+
+### Nature
+Inspired by Nature/Science journal figures. Muted blue-grey tones.
+
+```{r nature, eval = FALSE}
+plot_sem(fit, layout = "tree2", theme = "nature",
+         title = "Nature Theme")
+```
+
+### Dark
+Dark background optimized for slides and presentations.
+
+```{r dark, eval = FALSE}
+plot_sem(fit, layout = "tree2", theme = "dark",
+         title = "Dark Theme")
+```
+
+### Colorful
+Vibrant, high-saturation colors for posters and eye-catching presentations.
+
+```{r colorful, eval = FALSE}
+plot_sem(fit, layout = "tree2", theme = "colorful",
+         title = "Colorful Theme")
+```
+
+## Color Palettes
+
+Beyond themes, you can apply color palettes to any theme:
+
+```{r palettes, eval = FALSE}
+plot_sem(fit, theme = "classic") + scale_sem_palette("ocean")
+plot_sem(fit, theme = "classic") + scale_sem_palette("earth")
+plot_sem(fit, theme = "classic") + scale_sem_palette("pastel")
+plot_sem(fit, theme = "classic") + scale_sem_palette("viridis")
+plot_sem(fit, theme = "classic") + scale_sem_palette("grey")
+```

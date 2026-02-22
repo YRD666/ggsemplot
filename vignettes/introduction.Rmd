@@ -1,0 +1,119 @@
+---
+title: "Getting Started with ggsemplot"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with ggsemplot}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 6,
+  dpi = 150
+)
+```
+
+## Overview
+
+**ggsemplot** creates publication-quality SEM path diagrams with a single function 
+call. It is built on ggplot2, so every plot is fully customizable using the 
+familiar `+` syntax.
+
+## Quick Start
+
+```{r basic-cfa, eval = FALSE}
+library(lavaan)
+library(ggsemplot)
+
+# Define a CFA model
+model <- '
+  visual  =~ x1 + x2 + x3
+  textual =~ x4 + x5 + x6
+  speed   =~ x7 + x8 + x9
+'
+fit <- cfa(model, data = HolzingerSwineford1939)
+
+# One-line plot with beautiful defaults
+plot_sem(fit)
+```
+
+## Choosing a Theme
+
+ggsemplot ships with 7 built-in themes:
+
+```{r themes, eval = FALSE}
+plot_sem(fit, theme = "classic")   # Clean academic (default)
+plot_sem(fit, theme = "modern")    # Soft colors, rounded corners
+plot_sem(fit, theme = "apa")       # APA journal format
+plot_sem(fit, theme = "minimal")   # Ultra-clean
+plot_sem(fit, theme = "nature")    # Nature/Science style
+plot_sem(fit, theme = "dark")      # Dark background for slides
+plot_sem(fit, theme = "colorful")  # Vibrant for posters
+```
+
+## Layout Options
+
+```{r layouts, eval = FALSE}
+plot_sem(fit, layout = "tree",   rotation = "TB")  # Top-to-bottom (default for CFA)
+plot_sem(fit, layout = "tree",   rotation = "LR")  # Left-to-right
+plot_sem(fit, layout = "circle")                    # Circular
+plot_sem(fit, layout = "spring")                    # Force-directed
+```
+
+## Adding Annotations
+
+```{r annotations, eval = FALSE}
+# Show fit indices
+plot_sem(fit, fit_indices = c("cfi", "rmsea", "srmr"))
+
+# Show R-squared inside nodes
+plot_sem(fit, r_squared = TRUE)
+
+# Show residual variance loops
+plot_sem(fit, residuals = TRUE)
+
+# Combine with + syntax
+plot_sem(fit) +
+  add_fit_indices(c("cfi", "rmsea"), position = "bottomright") +
+  add_r_squared(inside_node = TRUE)
+```
+
+## Customizing Paths and Nodes
+
+```{r customize, eval = FALSE}
+plot_sem(fit, theme = "modern") +
+  highlight_path("visual =~ x1", color = "#E74C3C", width = 2) +
+  style_node("visual", fill = "#FFE0B2", color = "#E65100")
+```
+
+## Step-by-step Workflow
+
+For advanced control, use the extract-layout-plot pipeline:
+
+```{r workflow, eval = FALSE}
+# 1. Extract model structure
+m <- extract_sem(fit)
+print(m)
+
+# 2. Apply and adjust layout
+m <- set_layout(m, "tree", rotation = "TB")
+m <- nudge_node(m, "visual", dx = -0.3)
+m <- swap_nodes(m, "x1", "x3")
+
+# 3. Plot with full control
+plot_sem(m, theme = "nature", title = "My Custom CFA")
+```
+
+## Saving Figures
+
+Since ggsemplot returns standard ggplot2 objects, use `ggsave()`:
+
+```{r save, eval = FALSE}
+p <- plot_sem(fit, theme = "modern")
+ggplot2::ggsave("my_sem.pdf", p, width = 10, height = 7)
+ggplot2::ggsave("my_sem.png", p, width = 10, height = 7, dpi = 300)
+```
