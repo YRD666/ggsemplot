@@ -18,8 +18,8 @@ a standard ggplot object you can customize, extend, and save.
 ## Installation
 
 ```r
-# Install from source
-devtools::install_local("path/to/ggsemplot")
+# Install from GitHub
+devtools::install_github("YRD666/ggsemplot")
 ```
 
 ## Quick Start
